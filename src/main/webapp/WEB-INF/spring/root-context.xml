@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 여기 추가할려면 pome.xml 에 추가하고 해야함  -->
+	<!--  DB설정(hikariCP) -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+			<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+			<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+			<property name="username" value="spring"></property>
+			<property name="password" value="spring"></property>
+	</bean>
+	
+		<!-- HikariCp configuration  -->
+		<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+			<constructor-arg ref="hikariConfig"/>
+		</bean>
+	
+		
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/com/myspring/model/Configuration.xml"/>
+		<property name="mapperLocations" value="classpath:/com/myspring/model/DAOXML.xml"/>
+	</bean>
+		
+		<!-- 위의 것을 한단 계 나아가서 객체 새로 지정함 sqlSession 객체로 만들었음  -->
+		<!-- 바꿀 필요 없이 그냥 갖다가 쓰면 됨  -->
+		<!-- 이걸 쓰는 이유는 각 함수마다 openSession을 다하는 것을 sqlMap으로 그냥 바로 접근 할 수 있게 해주는 코드  -->
+	 <bean id="sqlMap" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"/>
+	</bean>
+	
+	<!--tx 이건 자동 커밋인데.. 아마도 커밋할 거리가 있어야 체크(NameSpaces) 할 수 있게 생기는듯   -->
+	<tx:annotation-driven transaction-manager="transactionManager"/> 
+	
+
+
+
+
+		
+		
+	
+		
+</beans>
