@@ -6,6 +6,7 @@
 	<!-- 별칭  -->
 	<typeAliases>
 	<typeAlias type="com.myspring.model.BoardDTO" alias="dto"/>
+	<typeAlias type="com.myspring.model.CommentDTO" alias="cdto"/>
 	</typeAliases>
 	
 	<!--이 부분을 root-context.xml로 옮김  -->

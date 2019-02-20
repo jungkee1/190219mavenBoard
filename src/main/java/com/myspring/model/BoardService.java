@@ -1,5 +1,6 @@
 package com.myspring.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -18,8 +19,8 @@ public class BoardService {
 	}
 	
 	//list
-	public List<BoardDTO> list(){
-		List<BoardDTO> dto = bDao.list(boardSql+".list"); //sqlid 만 인자 값으로 넘김
+	public List<BoardDTO> list(HashMap<String, Integer> hm){
+		List<BoardDTO> dto = bDao.list(boardSql+".list", hm); //sqlid 만 인자 값으로 넘김
 		return dto;
 	}
 
@@ -38,6 +39,39 @@ public class BoardService {
 	public void delete(int seq) {
 		bDao.delete(boardSql+".delete",seq);
 		
+	}
+	
+	//count
+	public int count() {
+		int count = bDao.count(boardSql+".count");
+		return count;
+	}
+	
+	//search
+	public List<BoardDTO> search(String field, String word){
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("field", field);
+		hm.put("word", word);
+		return bDao.search(boardSql+".search", hm);
+	}
+	
+	//reply
+	public void reply(BoardDTO dto) {
+		bDao.reply(boardSql+".reply",dto);
+	}
+	
+	//comment
+	public void comment(String comment, String cName) {
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("msg", comment);
+		hm.put("cName", cName);
+		bDao.comment(boardSql+".comment",hm);
+	}
+	
+	//commentList
+	public List<CommentDTO> commentList() {
+		List<CommentDTO> dto = bDao.commentList("commentList");
+		return dto;
 	}
 
 }

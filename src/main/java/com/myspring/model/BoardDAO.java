@@ -1,5 +1,6 @@
 package com.myspring.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface BoardDAO {
@@ -8,7 +9,7 @@ public interface BoardDAO {
 	void insert(String sqlid, BoardDTO dto);
 	
 	//전체보기
-	List<BoardDTO> list(String sqlid);
+	List<BoardDTO> list(String sqlid, HashMap<String, Integer>hm);
 	
 	//수정
 	void update(String sqlid, BoardDTO dto);
@@ -19,8 +20,6 @@ public interface BoardDAO {
 	//상세보기
 	BoardDTO detail(String sqlid, int seq);
 	
-	//패스워드체크
-	
 	//게시글 수
-
+	
 }

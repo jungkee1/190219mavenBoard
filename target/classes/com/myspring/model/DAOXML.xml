@@ -8,13 +8,16 @@
 	insert into springboard  values(springboard_seq.nextval,#{title},#{content},#{writer},sysdate,0,#{password},springboard_seq.nextval,0,0)
 </insert>
 
-<!--전체보기  -->
-<select id="list" resultType="dto">
-	select * from springboard
+<!--전체보기 + 페이징  -->
+<select id="list" resultType="dto" parameterType="map"> <!-- hashmap == map  -->
+	<!-- CDATA를 사용하면 문자 그대로 인식 할 수 있게 해줌, 여기서 쿼리안에 부등호랑 괄호등이 태그랑 헷갈려서 뜨는 에러를 이렇게 커버침 혹은 태그를 lt&; 로 작성가능 #을 $쓰면 홑따옴표 떼기 용으로 가능    -->
+<![CDATA[   
+	select * from (select rownum rnum, aa.* from (select  * from springboard order by groups desc, steps asc) aa) where rnum>=${startRow} and rnum <= ${endRow}
+]]>
 </select>
 
 <!--상세보기  -->
-<select id="detail" parameterType="int" resultType="dto">
+<select id="detail" parameterType="Integer" resultType="dto">
 	select * from springboard where seq = #{seq}
 </select>
 
@@ -28,6 +31,57 @@
 	delete from springboard where seq = #{seq}	
 </delete>
 
+<!-- 게시글 개수  -->
+<select id="count" resultType="Integer">
+	select count(*) from springboard
+</select>
+
+<!--검색하기  -->
+<select id="search" parameterType="map" resultType="dto"> <!--where 태그를하면 이하내용을 구분해서 쓰는거임  -->
+select * from springboard
+	<where>
+		<if test="word!=null and field=='writer'">
+			writer like '%'||#{word}||'%'
+		</if>
+		<if test="word!=null and field=='content'">
+			content like '%'||#{word}||'%'
+		</if>
+	</where>
+</select>
+	<!-- 검색하기 깔끔하게 하는방법 다음에 꼭 해볼 것  -->
+<!-- <sql id="search">
+	<where>
+		<if test="word!= null and field == 'name'">
+			name like '%'||#{word}||'%'
+		</if>
+		<if test="word != null and field == 'memo'">
+			memo like '%'||#{word}||'%'
+		</if>
+	</where>
+</sql>
+<select id="searchMember" parameterType="java.util.Map" resultType="org.member.mybatis.vo.MemberVO">
+	select * from springmember
+	<include refid="search"/>
+</select> -->
+
+<!-- 답글 달리기 전에 기존의 답글들의 steps를 1씩 증가 시켜줌  -->
+<update id="reupdate" parameterType="Integer">
+	update springboard set steps = steps+1 where groups = #{groups} and steps > #{steps} <!--  부모의 스텝보다 크면 +1 -->
+</update>
+<!--답글 달기  -->
+<insert id="reply" parameterType="dto">
+	insert into springboard values(springboard_seq.nextval,#{title},#{content},#{writer},sysdate,0,#{password},#{groups},#{levels}+1,#{steps}+1) 
+</insert>
+
+<!-- 댓글 달기  -->
+<insert id="comment" parameterType="map">
+	insert into commentt values(commentt_seq.nextval,#{msg}, #{cName}, sysdate)
+</insert>
+
+<!-- 댓글 뿌리기  -->
+<select id="commentList" resultType="cdto"> <!-- resultType 할려면 alias configuration 에서 설정 해놓고 쓸 것  -->
+	select * from commentt
+</select>
 
 
 

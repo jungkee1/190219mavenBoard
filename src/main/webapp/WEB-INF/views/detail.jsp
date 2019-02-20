@@ -5,6 +5,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+function comment(){
+	$.ajax({
+		url:"comment",
+		type:"get",
+		data:{"comment" : $("#comment").val(), "cName" : $("#cName").val()},
+		success:function(data){
+			alert(data);
+		}
+	})
+}
+</script>
 </head>
 <body>
 <div align="center">
@@ -29,9 +42,13 @@
 		<td><input type="text" name="password1"></td>
 	</tr>
 </table>
-<input type="submit" value="수정하기">
 </form>
+<input type="submit" value="수정하기">
+<input type="button" value="답글쓰기" onclick="location='replyForm?groups=${dto.groups}&levels=${dto.levels}&steps=${dto.steps}'"><br>
+<input type="text" size="50" name="comment" id="comment"> <input type="text" id="cName"> <input type="button" value="코멘트남기기" onclick="comment()">
+<div id="result">
 
+</div>
 
 </div>
 

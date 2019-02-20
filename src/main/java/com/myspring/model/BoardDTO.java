@@ -8,6 +8,9 @@ public class BoardDTO {
 	private String regdate;
 	private int hitcount;
 	private String password;
+	private int groups;
+	private int levels;
+	private int steps;
 	public int getSeq() {
 		return seq;
 	}
@@ -68,8 +71,5 @@ public class BoardDTO {
 	public void setSteps(int steps) {
 		this.steps = steps;
 	}
-	private int groups;
-	private int levels;
-	private int steps;
 
 }

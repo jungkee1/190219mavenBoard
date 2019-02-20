@@ -8,11 +8,11 @@
 </head>
 <body>
 <div align="center">
-<form action="writeForm" method="post">
+<form action="replyForm" method="post">
 <table border="1" width="500">
 	<tr>
 		<td>title</td>
-		<td><input type="text" name="title"></td>
+		<td><input type="text" name="title" value="[답변]"></td> <!--이미지는 게시판에 뿌릴때 넣을꺼임  -->
 	</tr>
 	<tr>
 		<td>writer</td>
@@ -28,8 +28,10 @@
 	</tr>
 </table>
 <input type="submit" value="글작성">
+<input type="hidden" value="${groups }" name="groups">
+<input type="hidden" value="${levels }" name="levels">
+<input type="hidden" value="${steps }" name="steps">
 </form>
 </div>
-
 </body>
 </html>
