@@ -7,13 +7,64 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
+window.onload = function () { // window.onload는 doucnemnt.getready랑 비슷한데 전자는 페이이지당 한개의 함수만 실행되고 후자는 여러번 사용가능하며 순서대로 모든 함수가 다 실행됨
+	//콜백함수
+/* 	$.get("commentList",	 
+	function(data){
+		data=$.parseJSON(data);
+		var htmlStr ="";
+		htmlStr += "<table>";
+		for(var i=0;i<data.length;i++){
+			htmlStr += "<tr>";
+			htmlStr += "<td>" + data[i].msg+"</td>";
+			htmlStr += "<td>"+ data[i].cName+"</td>";
+			htmlStr += "</tr>";
+		}
+		htmlStr += "</table>";
+		$("#result").html(htmlStr);
+	}		
+	) */
+	$.ajax({	//콜백함수 ajax 버전
+		url:"commentList",
+		type:"get",
+		success:function(data){
+			data=$.parseJSON(data);
+			var htmlStr ="";
+			htmlStr += "<table>";
+			for(var i=0;i<data.length;i++){
+				htmlStr += "<tr>";
+				htmlStr += "<td>" + data[i].msg+"</td>";
+				htmlStr += "<td>"+ data[i].cName+"</td>";
+				htmlStr += "</tr>";
+			}
+			htmlStr += "</table>";
+			$("#result").html(htmlStr);
+		}
+	})
+		
+}
+
+
 function comment(){
 	$.ajax({
 		url:"comment",
 		type:"get",
 		data:{"comment" : $("#comment").val(), "cName" : $("#cName").val()},
 		success:function(data){
-			alert(data);
+			data=$.parseJSON(data);
+			var htmlStr ="";
+			htmlStr += "<table>";
+			for(var i=0;i<data.length;i++){
+				htmlStr += "<tr>";
+				htmlStr += "<td>" + data[i].msg+"</td>";
+				htmlStr += "<td>"+ data[i].cName+"</td>";
+				htmlStr += "</tr>";
+			}
+			htmlStr += "</table>";
+			$("#result").html(htmlStr);
+		},
+		error:function(e){
+			alert("오류 메시지:" +e);
 		}
 	})
 }

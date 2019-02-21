@@ -98,7 +98,7 @@ public class HomeController {
 		model.addAttribute("number",number);
 		model. addAttribute("pageHtml", pageHtml);
 		return "list"; //자동으로 list.jsp로 간다 -> 여기서 return을 생략해도 자동으로 위에서 RequestMapping에 있는 이름을 찾아서 list.jsp로 감, 가독성을 위해 적어주었음
-	}
+	}						//그냥 list로 가면 연결을 유지하는거고 redirect: 로해서 가면 연결을 끊고 새로 간다
 	
 	//상세보기
 	@GetMapping("/detail")
