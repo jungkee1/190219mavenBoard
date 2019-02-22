@@ -6,11 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 </head>
 <body>
+<h1 class="text-center">게시판 전체보기</h1>
 게시글 수:${count }
 <div align="center">
-<table border="1">
+<table   class="table table-striped">
 	<tr>
 		<td>글번호</td>
 		<td>제목</td>
